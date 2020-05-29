@@ -4,6 +4,8 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using MySql.Data.MySqlClient;
+using NetFinalProject.Models;
 
 namespace NetFinalProject.Controllers
 {
@@ -12,7 +14,15 @@ namespace NetFinalProject.Controllers
         // GET api/values
         public IEnumerable<string> Get()
         {
-            return new string[] { "hello", "world" };
+            using (var db = new DBModel())
+            {
+                var user = (from t in db.users
+                            where t.nickname == "张三"
+                            select t).First();
+
+
+                return new string[] { user.id.ToString(), "world" };
+            }
         }
 
         // GET api/values/5
