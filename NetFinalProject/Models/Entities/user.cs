@@ -15,6 +15,9 @@ namespace NetFinalProject.Models
         public string nickname { get; set; }
 
         [StringLength(50)]
+        public string username { get; set; }
+
+        [StringLength(50)]
         public string pwd { get; set; }
 
         [StringLength(250)]

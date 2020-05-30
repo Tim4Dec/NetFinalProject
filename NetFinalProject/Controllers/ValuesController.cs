@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Web.Http;
 using MySql.Data.MySqlClient;
 using NetFinalProject.Models;
+using NetFinalProject.Services;
 
 namespace NetFinalProject.Controllers
 {
@@ -20,8 +21,10 @@ namespace NetFinalProject.Controllers
                             where t.nickname == "张三"
                             select t).First();
 
+               // var r = LoginService.Login("Sam", "1234");
 
-                return new string[] { user.id.ToString(), "world" };
+
+                return new string[] { user.id.ToString(), "hello" };
             }
         }
 
