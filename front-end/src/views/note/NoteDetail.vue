@@ -72,15 +72,15 @@
 
     methods: {
       getDetail() {
-        getNoteDetail({"id":this.noteID}).then(response => {
+        getNoteDetail(this.noteID).then(response => {
           console.log(this.noteID);
           console.log(response)
 
-          this.data = response.data;
+          this.data = response.Data;
           this.title = this.data.title;
           this.author = this.data.author;
           this.content = this.data.content;
-          this.issuingTime = this.data.issuingTime;
+          this.issuingTime = this.data.time;
 
           console.log(this.data);
         })

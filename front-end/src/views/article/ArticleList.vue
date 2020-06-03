@@ -7,11 +7,11 @@
         :loading="loading"
         style="margin-bottom: 24px; margin-top: 0px"
         :bordered="true"
-        title="科普天地"
+        title="招聘信息"
         :body-style="{ padding: 0 }">
         <a-card>
           <a-row :gutter="12">
-            <!--科普天地-->
+            <!--招聘信息-->
             <div class="ant-pro-pages-list-projects-cardList">
               <a-list :loading="loading" :data-source="data" :grid="{ gutter: 12,column: 4 }"
                       :pagination="pagination" >
@@ -25,7 +25,7 @@
                     </div>
 -->
 
-                    <img slot="cover" :src="item.image" :alt="item.title"/>
+                    <img slot="cover" :src="item.img" :alt="item.title"/>
                     <a-card-meta :title="item.title" style="text-align: center">
                       <template slot="description">
                         <ellipsis :length="70">{{ item.content | ellipsis }}</ellipsis>
@@ -37,7 +37,7 @@
                   </a-card>
                 </a-list-item>
               </a-list>
-                <a-pagination @change="onChange" :current="current" :total="totalPage*10" style="text-align: center"/>
+                <a-pagination @change="onChange" :current="current" :total="10*totalPage" style="text-align: center"/>
             </div>
 
           </a-row>
@@ -85,13 +85,14 @@
     methods: {
       onChange(current) {
         this.current = current;
-        console.log('页码：',this.allData.id)
-          getArticle({'pageNum':this.current}).then(response => {
-              console.log('点击输出', response)
-              this.allData = response.data
+        console.log('页码：',this.current)
+          //getArticle({'page':this.current}).then(response => {
+          getArticle(this.current).then(response => {
+              console.log('获取到文章列表1', response)
+              this.allData = response.Data
               this.loading = false
-              this.data = this.allData.content
-              this.totalPage = this.allData.totalPages
+              this.data = this.allData.Data
+              this.totalPage = this.allData.Total
           })
       },
 
@@ -99,12 +100,12 @@
     },
     mounted(){
         console.log(this.current);
-        getArticle({'pageNum':this.current}).then(response => {
-            console.log('点击输出', response)
-            this.allData = response.data
+        getArticle({'page':this.current}).then(response => {
+            console.log('获取文章列表2', response)
+            this.allData = response.Data
             this.loading = false
-            this.data = this.allData.content
-            this.totalPage = this.allData.totalPage
+            this.data = this.allData.Data
+            this.totalPage = this.allData.Total
         })
     }
   }

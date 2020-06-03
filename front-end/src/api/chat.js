@@ -1,21 +1,21 @@
 import { axios } from '@/utils/request'
 
 const api = {
-  allPost: '/Treehole/allPost',
-  postDetail: '/Treehole/detail',
-  sendTreehole: 'Treehole/sendTreehole',
-  deleteTreehole: 'Treehole/deleteTreehole',
-  sendComment: 'Treehole/sendComment',
-  comment:'Treehole/comment',
+  allPost: 'Speech/All',
+  postDetail: 'Speech/Detail',
+  deliverSpeech: 'Speech/Deliver',
+  deleteSpeech: 'Speech/Delete',
+  sendComment: 'Comment/Deliver',
+  comment:'Comment/All',
 }
 
 export default api
 
 export function getPost (data) {
   return axios({
-    url: api.allPost,
+    url: api.allPost + "?=" + data,
     method: 'post',
-    data: data,
+    //data: data,
     headers: {
       'Content-Type': 'application/json;charset=UTF-8'
     }
@@ -24,7 +24,7 @@ export function getPost (data) {
 
 export function postDetail(data) {
   return axios({
-    url: api.postDetail,
+    url: api.postDetail + "?id=" + data,
     method: 'post',
     data: data,
     headers: {
@@ -37,29 +37,29 @@ export function getComment(data) {
   return axios({
     url: api.comment,
     method: 'post',
-    data: data,
+    data: JSON.stringify(data),
     headers: {
       'Content-Type': 'application/json;charset=UTF-8'
     }
   })
 }
 
-export function sendTreehole(parameter) {
+export function deliverSpeech(data) {
   return axios({
-    url: api.sendTreehole,
+    url: api.deliverSpeech,
     method: 'post',
-    data: parameter,
+    data: JSON.stringify(data),
     headers: {
       'Content-Type': 'application/json;charset=UTF-8'
     }
   })
 }
 
-export function deleteTreehole (data) {
+export function deleteSpeech (data) {
   return axios({
-    url: api.deleteTreehole,
+    url: api.deleteSpeech + "?id="+ data ,
     method: 'post',
-    data: data,
+    //data: data,
     headers: {
       'Content-Type': 'application/json;charset=UTF-8'
     }
@@ -70,7 +70,7 @@ export function sendComment(data) {
   return axios({
     url: api.sendComment,
     method: 'post',
-    data: data,
+    data: JSON.stringify(data),
     headers: {
       'Content-Type': 'application/json;charset=UTF-8'
     }

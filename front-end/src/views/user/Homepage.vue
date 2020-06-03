@@ -20,22 +20,23 @@
             <a-icon type="right-circle"/>
           </div>
           <!--滚动图片-->
-          <!--个人主页-->
-          <router-link :to="{name:'myPage'}" >
-            <img src="../../assets/bg1.jpg" alt="P1" class="carousel-img">
+          <router-link :to="{name:'homepage'}" >
+            <img src="../../assets/bg05.jpg" alt="P2" class="carousel-img">
           </router-link>
-          <!--心理测试-->
-          <router-link :to="{name:'ArticleList'}" >
-            <img src="../../assets/bg2.jpg" alt="P2" class="carousel-img">
+          <router-link :to="{name:'homepage'}" >
+            <img src="../../assets/bg06.jpg" alt="P2" class="carousel-img">
           </router-link>
-          <!--科普天地-->
-          <router-link :to="{name:'Psytest'}" >
-            <img src="../../assets/bg3.jpg" alt="P3" class="carousel-img">
+          <router-link :to="{name:'homepage'}" >
+            <img src="../../assets/bg13.jpg" alt="P3" class="carousel-img">
           </router-link>
-          <!---->
-          <router-link :to="{name:'treehole'}" >
-            <img src="../../assets/bg4.jpg" alt="P4" class="carousel-img">
+          <router-link :to="{name:'homepage'}" >
+            <img src="../../assets/bg11.jpg" alt="P2" class="carousel-img">
           </router-link>
+          <router-link :to="{name:'homepage'}" >
+            <img src="../../assets/bg02.png" alt="P2" class="carousel-img">
+          </router-link>
+
+          <!--滚动招聘结束-->
         </a-carousel>
 
 
@@ -51,14 +52,14 @@
               <a-col :md="24" :lg="6">
                 <a-card hoverable>
                   <img
-                    alt="科普天地"
-                    src="https://res.cloudinary.com/dwjmbwy0f/image/upload/v1577049809/psyche/175F1A13E92EFC616B3E7093E9F1C5DD_vu0xks.jpg"
+                    alt="校园招聘"
+                    src="https://s1.ax1x.com/2020/06/03/tdzZKP.jpg"
                     slot="cover"
                   />
                   <router-link :to="{name: 'ArticleList'}" active-class="active">
                     <a-card-meta
                       title="校园招聘"
-                      description="点击浏览最新资讯">
+                      description="海量HC等你来！点击浏览最新资讯">
                     </a-card-meta>
                   </router-link>
                 </a-card>
@@ -66,14 +67,14 @@
               <a-col :md="24" :lg="6">
                 <a-card hoverable>
                   <img
-                    alt="通知栏"
-                    src="https://res.cloudinary.com/dwjmbwy0f/image/upload/v1577049826/psyche/17C958B070F0A6A8B2BFAA268F1C917C_ujnsmx.jpg"
+                    alt="通知公告"
+                    src="https://s1.ax1x.com/2020/06/03/tw9TMR.jpg"
                     slot="cover"
                   />
                   <router-link :to="{name: 'NoteList'}" active-class="active">
                     <a-card-meta
                       title="通知公告"
-                      description="点击查看通知">
+                      description="点击查看最新的通知">
                     </a-card-meta>
                   </router-link>
                 </a-card>
@@ -81,14 +82,14 @@
               <a-col :md="24" :lg="6">
                 <a-card hoverable>
                   <img
-                    alt="心理咨询"
-                    src="https://res.cloudinary.com/dwjmbwy0f/image/upload/v1577049660/psyche/396F3C7323E081617808A18D72B0F5DE_ohkxre.jpg"
+                    alt="交流天地"
+                    src="https://s1.ax1x.com/2020/06/03/tw97s1.jpg"
                     slot="cover"
                   />
-                  <router-link :to="{name: 'teacher'}" active-class="active">
+                  <router-link :to="{name: 'chat'}" active-class="active">
                     <a-card-meta
                       title="交流天地"
-                      description="点击预约心理医生">
+                      description="分享你的职场见闻和疑惑">
                     </a-card-meta>
                   </router-link>
                 </a-card>
@@ -96,14 +97,14 @@
               <a-col :md="24" :lg="6">
                 <a-card hoverable>
                   <img
-                    alt="心理测试"
-                    src="https://res.cloudinary.com/dwjmbwy0f/image/upload/v1577050086/psyche/2A8FD3AD7E4B45B1E602453CE9EB6782_wcqcz7.jpg"
+                    alt="个人中心"
+                    src="https://s1.ax1x.com/2020/06/03/tw9Hqx.jpg"
                     slot="cover"
                   />
-                  <router-link :to="{name: 'TestList'}" active-class="active">
+                  <router-link :to="{name: 'myPage'}" active-class="active">
                     <a-card-meta
                       title="个人中心"
-                      description="测测你的内心">
+                      description="管理你的个人信息">
                     </a-card-meta>
                   </router-link>
                 </a-card>
@@ -126,7 +127,7 @@
   import HeadInfo from '@/components/tools/HeadInfo'
   import {Radar} from '@/components'
 
-  import {getRoleList, getServiceList} from '@/api/manage'
+  //import {getRoleList, getServiceList} from '@/api/manage'
 
   const DataSet = require('@antv/data-set')
 
@@ -159,7 +160,7 @@
     created() {
       this.user = this.userInfo
       this.avatar = this.userInfo.avatar
-
+/*
       getRoleList().then(res => {
         console.log('workplace -> call getRoleList()', res)
       })
@@ -167,6 +168,7 @@
       getServiceList().then(res => {
         console.log('workplace -> call getServiceList()', res)
       })
+*/
     },
   }
 </script>
@@ -185,7 +187,7 @@
     text-align: center;
     height: 320px;
     line-height: 160px;
-    background: #364d79;
+    background: #fff;
     overflow: hidden;
   }
 
@@ -194,8 +196,8 @@
     height: 25px;
     font-size: 25px;
     color: #fff;
-    background-color: rgba(31, 45, 61, 0.11);
-    opacity: 0.3;
+    background-color: #1890FF;
+    opacity: 0.5;
   }
 
   .ant-carousel >>> .custom-slick-arrow:before {

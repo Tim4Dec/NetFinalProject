@@ -1,6 +1,6 @@
 /* eslint-disable */
 import {UserLayout, BasicLayout, RouteView, BlankLayout} from '@/layouts'
-import {chat, recruit, consult} from '@/core/icons'
+import {recruit, consult} from '@/core/icons'
 
 export const asyncRouterMap = [
 {
@@ -61,31 +61,51 @@ export const asyncRouterMap = [
 
 
     //交流天地
+    /*
     {
-      path: '/treeHole',
-      name: 'treehole',
-      redirect: '/treeHole/Post',
+      path: '/chat',
+      name: 'chat',
+      redirect: '/chat/Post',
       component: RouteView,
       meta: {title: '交流天地', keepAlive: true, icon: consult},
       children: [
         {
-          path: '/treeHole/post',
+          path: '/chat/post',
           name: 'post',
-          component: () => import( '@/views/treeHole/Post' ),
+          component: () => import( '@/views/chat/Post' ),
           meta: {
             title: '帖子', keepAlive: false //, icon: consult
           }
         },
         {
-          path: '/treeHole/detail/:id',
+          path: '/chat/detail/:id',
           name: 'postDetail',
           hidden: true,
-          component: () => import( '@/views/treeHole/PostDetail' ),
+          component: () => import( '@/views/chat/PostDetail' ),
           meta: {
             title: '详情', keepAlive: false, icon: consult
           }
         }
       ]
+    },
+*/
+    {
+      path: '/chat',
+      name: 'chat',
+      hidden: false,
+      component: () => import('@/views/chat/Post'),
+      meta: {
+        title: '交流天地', keepAlive: true, icon: consult
+      }
+    },
+    {
+      path: '/chat/detail/:id',
+      name: 'postDetail',
+      hidden: true,
+      component: () => import('@/views/chat/PostDetail'),
+      meta: {
+        title: '详情', keepAlive: false, icon: consult,
+      }
     },
 
 
@@ -119,7 +139,7 @@ export const constantRouterMap = [
     {
       path: 'login',
       name: 'login',
-      component: () => import(/* webpackChunkName: "user" */ '@/views/user/Login copy' )
+      component: () => import(/* webpackChunkName: "user" */ '@/views/user/Login' )
     }
   ]
 },

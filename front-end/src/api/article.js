@@ -1,18 +1,18 @@
 import {axios} from '@/utils/request'
 import Qs from 'qs'
 const api = {
-  allArticle: '/article',
-  articleDetail: '/article/certain',
+  allArticle: 'Article/All',
+  articleDetail: 'Article/Detail',
 }
 
 export default api
 
 export function getArticle(data) {
   return axios({
-    url: api.allArticle,
+    url: api.allArticle + "?page="+data,
     method: 'post',
     // data: data,
-    data: Qs.stringify(data),
+    // data: Qs.stringify(data),
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded'
     }
@@ -21,9 +21,9 @@ export function getArticle(data) {
 
 export function getArticleDetail(data) {
   return axios({
-    url: api.articleDetail,
+    url: api.articleDetail + "?id="+data,
     method: 'post',
-    data: Qs.stringify(data),
+    //data: Qs.stringify(data),
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded'
     }

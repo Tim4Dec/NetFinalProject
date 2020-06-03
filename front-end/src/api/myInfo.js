@@ -1,15 +1,15 @@
 import {axios} from "@/utils/request";
 
 const api = {
-  myTreeholes: '/myInfo/myTreeholes',
+  mySpeech: 'User/Speech',
   myLike: '/myInfo/myLike',
 }
 
 export function getMyPost (data) {
   return axios({
-    url: api.myTreeholes,
+    url: api.mySpeech,
     method: 'post',
-    data: data,
+    data: JSON.stringify(data),
     headers: {
       'Content-Type': 'application/json;charset=UTF-8'
     }

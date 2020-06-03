@@ -38,10 +38,12 @@ const user = {
   actions: {
     // 登录
     Login({ commit }, userInfo) {
+      console.log("userInfo ", userInfo)
       return new Promise((resolve, reject) => {
         login(userInfo)
           .then(response => {
-            const result = response.data
+            console.log(response)
+            const result = response.Data
             Vue.ls.set(ACCESS_TOKEN, result.id, 7 * 24 * 60 * 60 * 1000)
             commit('SET_TOKEN', result.id)
             commit('SET_INFO',result)

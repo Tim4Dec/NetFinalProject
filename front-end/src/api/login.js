@@ -4,11 +4,11 @@ import Qs from 'qs'
 
 export function login(data) {
   return axios({
-    url: '/user/login',
+    url: 'User/Login',
     method: 'post',
-    data: Qs.stringify(data),
+    data: JSON.stringify(data),
     headers: {
-      'Content-Type': 'application/x-www-form-urlencoded'
+      'Content-Type': 'application/json;charset=UTF-8'
     }
   })
 }

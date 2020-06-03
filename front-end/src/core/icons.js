@@ -9,5 +9,6 @@
 
 import recruit from '@/assets/icons/recruit.svg?inline'
 import consult from '@/assets/icons/consult.svg?inline'
+import job from '@/assets/icons/job.svg?inline'
 
-export { recruit, consult}
+export { recruit, consult, job}

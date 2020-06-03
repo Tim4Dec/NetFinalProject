@@ -1,3 +1,5 @@
+
+
 <template>
   <a-row :gutter="24">
     <a-col :xl="24" :lg="24" :md="24" :sm="24" :xs="24">
@@ -5,7 +7,7 @@
       <a-card
         style="margin-bottom: 0px; margin-top: 0px"
         :bordered="true"
-        title="通知栏"
+        title="通知公告"
         :body-style="{ padding: 10 }">
 
         <!--搜索框-->
@@ -20,26 +22,27 @@
                 </div>
         -->
 
-        <a-list size="large" :datasrc="data"
-                :pagination="{showSizeChanger: false, showQuickJumper: false, pageSize: 5, total: 50}">
+        <!--<a-list size="large" :datasrc="data"
+                :pagination="{showSizeChanger: false, showQuickJumper: false, pageSize: 10, total: 10}">-->
+          <a-list size="large">
           <a-list-item :key="index" v-for="(item, index) in data">
             <a-list-item-meta :description="item.content | ellipsis">
-              <a-avatar slot="avatar" size="large" shape="square" icon="mail"/>
-              <a slot="title">{{ item.title }}</a>
+              <a-avatar slot="avatar" size="large" shape="square" icon="solution"/>
+                <a slot="title" >{{ item.title }}</a>
             </a-list-item-meta>
             <div class="list-content">
               <div class="list-content-item">
-                <span style="text-align: center">收件时间</span>
-                <p>{{ item.announcementTime }}</p>
+                <span style="text-align: center">发布时间</span>
+                <p>{{ item.time}}</p>
               </div>
             </div>
             <a-button type="primary" class="cardItemContent" style="margin: 0 0 0 50px">
-              <router-link :to="{ name: 'NoteDetail', params:{ id: item.id} }">查看消息</router-link>
+              <router-link :to="{ name: 'NoteDetail', params:{ id: item.id} }">查看详情</router-link>
             </a-button>
 
           </a-list-item>
         </a-list>
-
+              <a-pagination @change="onChange" :current="current" :total="totalPage*10" style="text-align: center"/>
         <task-form ref="taskForm"/>
 
       </a-card>
@@ -78,15 +81,40 @@
     data() {
       return {
         data: [],
+        allData: [],
+        loading: false,
+        current: 1,
+        totalPage: 1,
       }
+    },
+
+    methods: {
+      onChange(current) {
+        this.current = current;
+        console.log('页码：',this.current)
+          //getArticle({'page':this.current}).then(response => {
+          getNoteList(this.current).then(response => {
+              console.log('获取到文章列表1', response)
+              this.allData = response.Data
+              this.loading = false
+              this.data = this.allData.Data
+              this.totalPage = this.allData.Total
+          })
+      },
+
+
     },
 
 
     mounted() {
-      getNoteList({'pageNum':1}).then((response) => {
-        console.log('初始化成功', response.data)
-        this.allData = response.data
-          this.data=this.allData.content
+      // getNoteList({'pageNum':1}).then((response) => {
+      getNoteList(1).then((response) => {
+        console.log('初始化成功', response.Data)
+        this.allData = response.Data
+        console.log("totalPage ", this.totalPage)
+        this.totalPage = this.allData.Total
+        this.current = this.allData.Current
+        this.data=this.allData.Data
       })
 
     },
@@ -124,6 +152,11 @@
   */
 
 </script>
+
+
+
+
+
 
 <style lang="less" scoped>
 

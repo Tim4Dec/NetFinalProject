@@ -6,13 +6,16 @@
                 @click="handleAdd()"
                 type="primary"
                 icon="plus"
-              >发帖
+              >交流
               </a-button>
         </div>
 
       <a-card style="top:10px">
       <a-list itemLayout="horizontal" :dataSource="Data">
+        <!--单条帖子-->
           <a-list-item slot="renderItem" slot-scope="item, index">
+          <!--删除帖子-->
+          <!--
             <a slot="actions" @click="onClickDelete(item)">删除</a>
             <a-modal
                 title="确认删除"
@@ -25,34 +28,38 @@
                 是否删除本条帖子
              </div>
              </a-modal>
+           -->
               <a-list-item-meta :title='item.title'>
                 <a-avatar
                   width="72"
                   slot="avatar"
-                  :src="item.headPortrait"
+                  :src="item.avatar"
                 />
                 <div slot="description">
                   <ellipsis :length="70">{{ item.content }}</ellipsis>
                 </div>
-                </br>
+                <br/>
                 <div slot="description">
                   <ellipsis :length="70">{{ item.sendTime }}</ellipsis>
                 </div>
 
               </a-list-item-meta>
               <div>
-                 <router-link :to="{ name: 'postDetail', params:{ id: item.id} }">帖子详情</router-link>
+                 <router-link :to="{ name: 'postDetail', params:{ id: item.id} }">详情</router-link>
               </div>
           </a-list-item>
+
       </a-list>
+      <!--换页-->
       <div style="margin-top:20px">
-        <a-pagination @change="onChange1" :current="current" :total="(totalPage+1)*10" />
+        <a-pagination @change="onChangePage" :current="current" :total="totalPage*8" />
       </div>
     </a-card>
+    <!--发言-->
     <a-modal
-              title="发帖"
+              title="交流"
               :visible="visible"
-              @ok="handleTreeholeOk"
+              @ok="onDeliverSpeech"
               :confirmLoading="confirmLoading"
               @cancel="handleCancel"
             >
@@ -64,38 +71,38 @@
                 :validateStatus="successAddTitle"
                 hasFeedback
               >
-                <a-input placeholder="请输入标题" v-model="addmdl.title" id="post_title"/>
+                <a-input placeholder="请输入标题" v-model="newSpeech.Title" id="post_title"/>
               </a-form-item>
 
               <a-form-item
                 :labelCol="labelCol"
-                :wrapperCol="wrapperCol"
+                :wrapperCol="wrapperCol" 
                 label="内容"
                 :validateStatus="successAddContent"
                 hasFeedback
               >
-                <a-input placeholder="请输入内容" v-model="addmdl.content" id="post_content"/>
+                <a-input placeholder="请输入内容" v-model="newSpeech.Content" id="post_content"/>
               </a-form-item>
-              <a-form-item
+              <!--<a-form-item
                 :labelCol="labelCol"
                 :wrapperCol="wrapperCol"
                 label="是否匿名"
                 hasFeedback
-              >
+              > 
                 <template>
                     <a-radio-group @change="onChange" defaultValue="1">
                         <a-radio :value="1">匿名</a-radio>
                         <a-radio :value="2">不匿名</a-radio>
                     </a-radio-group>
                 </template>
-              </a-form-item>
+              </a-form-item>-->
             </a-form>
     </a-modal>
     <a-modal
           title="确认发布"
-          :visible="visible5"
-          @ok="onClickNewRow"
-          @cancel="onClickCancel"
+          :visible="confirmDeliverVisible"
+          @ok="onConfirmDeliver"
+          @cancel="onCancelDeliver"
         >
           <div class="modal">
             是否确认发布
@@ -108,7 +115,7 @@
 import moment from 'moment'
 import { TagSelect, StandardFormRow, Ellipsis, AvatarList } from '@/components'
 import Fuse from 'fuse.js'
-import { getPost, sendTreehole, deleteTreehole} from '@/api/Treehole'
+import { getPost, deliverSpeech, deleteSpeech} from '@/api/chat'
   import {timeFix} from '@/utils/util'
   import {mapGetters} from 'vuex'
   import {Button} from 'ant-design-vue'
@@ -123,8 +130,8 @@ import { getPost, sendTreehole, deleteTreehole} from '@/api/Treehole'
 
   export default {
       inject:['reload'],
-    name: 'post',
-    components: {
+      name: 'post',
+      components: {
       AFormItem,
       ACol,
       ARow,
@@ -142,25 +149,26 @@ import { getPost, sendTreehole, deleteTreehole} from '@/api/Treehole'
         totalPage: '',
         visible: false,
         visible3: false,
-        visible5: false,
+        confirmDeliverVisible: false,
         todelete:'',
         owner:'',
-        addmdl:{
-          title:'',
-          content:'',
-            anonymous: '',
+        newSpeech:{
+          Title:'',
+          Content:'',
+          User: '',
+          //anonymous: '',
         },
       }
     },
     computed: {
       successAddTitle: function(){
-        if(this.addmdl.title === ''){
+        if(this.newSpeech.Title === ''){
           return "error"
         }
         return "success"
       },
       successAddContent: function(){
-        if(this.addmdl.content === ''){
+        if(this.newSpeech.Content === ''){
           return "error"
         }
         return "success"
@@ -172,7 +180,10 @@ import { getPost, sendTreehole, deleteTreehole} from '@/api/Treehole'
     created() {
       this.user = this.userInfo
     },
+
+
    methods: {
+
       onClickDelete (item) {
         this.todelete = item.id;
         this.owner = item.owner;
@@ -188,114 +199,129 @@ import { getPost, sendTreehole, deleteTreehole} from '@/api/Treehole'
         })
        }
       },
+
       Cancel(){
         this.visible3=false;
       },
-       onChange(e) {
-        console.log(`checked = ${e.target.value}`);
-        this.addmdl.anonymous=(`${e.target.value}`);
-       },
-       onChange1(current) {
-           this.current = current;
-           getPost(this.current).then((response)=>{
-               let data=response.data;
-               this.allData=response.data;
-               console.log(this.allData);
-              /* let obj=Object.assign(data.list,data.headPortrait);
-               console.log(obj);*/
-               this.Data=this.allData.post; //当前页的树洞信息
-               /*this.Data.headPortrait=data.headPotrait;
-               console.log("head:")*/
-               this.totalPage=this.allData.totalPage //总页数
-           })
-       },
-       handleAdd () {
-          this.visible = true
-       },
-       handleCancel(){
-          this.visible=false
-       },
-       onClickCancel(){
-          this.visible5=false
-       },
-     handleTreeholeOk(){
-      this.visible=false
-      if(this.successAddTitle === "error"||this.successAddContent === "error"){
-        this.$notification.open({
-          message: '发布失败',
-          description: '请按要求填写树洞信息',
-          icon: <a-icon type="exclamation-circle" style="color: #108ee9" />,
-        });
-        return;
-      }
-      this.visible5 = true
+
+
+      onChange(e) {
+        console.log("checked ="+` ${e.target.value}`);
+        //this.newSpeech.anonymous=(`${e.target.value}`);
       },
+
+
+      onChangePage(current) {
+
+           this.current = current;
+           console.log("onChangePage", this.current)
+
+           // 发送换页请求
+           getPost(this.current).then(response => {
+              console.log("onChangePage ", response)
+              this.allData=response.Data;
+              console.log(this.allData);
+
+              //当前页的发言信息
+              this.Data=this.allData.Data; 
+              //总页数
+              this.totalPage=this.allData.Total 
+           })
+      },
+
+      handleAdd () {
+          this.visible = true
+      },
+
+      handleCancel(){
+          this.visible=false
+      },
+
+      onCancelDeliver(){
+          this.confirmDeliverVisible=false
+      },
+
+
+      onDeliverSpeech(){
+        this.visible=false
+        if(this.successAddTitle === "error"||this.successAddContent === "error"){
+          this.$notification.open({
+            message: '发布失败',
+            description: '请按要求填写发言信息',
+            icon: <a-icon type="exclamation-circle" style="color: #108ee9" />,
+          });
+          return;
+        }
+        this.confirmDeliverVisible = true
+      },
+
       onClickDeleteRow () {
         this.visible3 = false
-        deleteTreehole({id:this.todelete}).then((response) => {
+        deleteSpeech({id:this.todelete}).then(response => {
         this.deleteInfo = response.code
             console.log(response.code)
             if(this.deleteInfo === 200){
                 this.$notification.open({
                     message: '删除成功',
-                    description: '本条树洞信息删除成功',
+                    description: '本条信息删除成功',
                     icon: <a-icon type="check" style="color: #108ee9" />,
             });
         }
         else{
           this.$notification.open({
           message: '删除失败',
-          description: '本条发帖信息删除失败',
+          description: '本条信息删除失败',
           icon: <a-icon type="warning" style="color: #108ee9" />,
         });
         }
       })
-          this.reload()
+        this.reload()
       },
+
       onClickRefresh(){
         this.reload()
       },
-      onClickNewRow(){
+
+
+      onConfirmDeliver(){
         this.visible = false
-        this.visible5 = false
-        console.log(this.addmdl.anonymous)
-       sendTreehole(this.addmdl).then((response) => {
-        this.addInfo = response.code
-        if(this.addInfo === 200){
-          this.$notification.open({
-          message: '发布成功',
-          description: '本条树洞信息发布成功',
-          icon: <a-icon type="check" style="color: #108ee9" />,
-        });}
-        else{
-          this.$notification.open({
-          message: '发布失败',
-          description: '本条树洞信息发布失败',
-          icon: <a-icon type="warning" style="color: #108ee9" />,
-        });
+        this.confirmDeliverVisible = false
+        this.newSpeech.User = this.userInfo.id
+        console.log("msg ", this.newSpeech)
+        deliverSpeech(this.newSpeech).then( response => {
+          console.log("deliverSpeech", response)
+          this.addInfo = response.Code
+          if(response.Code === 200){
+            this.$notification.open({
+            message: '发布成功',
+            description: '本条信息发布成功',
+            icon: <a-icon type="check" style="color: #108ee9" />,
+            });
+          }else{
+            this.$notification.open({
+            message: '发布失败',
+            description: '本条信息发布失败',
+            icon: <a-icon type="warning" style="color: #108ee9" />,
+          });
         }
-       })
-      this.reload()
+        })
+        this.reload()
       },
     },
+
+
     mounted() {
-      console.log('vuex', this.userInfo)
-      getPost(this.current).then((response)=>{
-        let data=response.data;
-        this.allData=response.data;
-        console.log(this.allData);
-        //console.log(data.list);
-       /* let obj=Object.assign(data.list,data.headPortrait);
-        console.log(obj);*/
+      console.log('userInfo', this.userInfo)
+      getPost(this.current).then(response =>{
+        console.log("mounted ",response)
 
+        // 返回信息
+        this.allData=response.Data;
+        // 当前页的发言信息
+        this.Data=this.allData.Data; 
+        // 总页数
+        this.totalPage=this.allData.Total 
 
-        this.Data=this.allData.post; //当前页的树洞信息
-       /* this.Data.headPortrait=data.headPotrait;
-        console.log("head:")*/
-        //console.log(data.headPotrait)
-        this.totalPage=this.allData.totalPage //总页数
-        //console.log(this.totalPage);
-        //console.log(this.Data);
       })
     }
 

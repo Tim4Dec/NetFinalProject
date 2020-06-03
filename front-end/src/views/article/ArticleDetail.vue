@@ -1,5 +1,5 @@
 <template>
-  <page-view title="文章详情">
+  <page-view title="招聘详情">
     <!--回到顶部-->
     <a-back-top></a-back-top>
     <a-back-top id="components-back-top-demo-custom">
@@ -75,15 +75,16 @@
 
     methods: {
       getDetail() {
-        getArticleDetail({"id":this.articleID}).then(response => {
-          console.log(this.articleID);
+        //getArticleDetail({"id":this.articleID}).then(response => {
+        getArticleDetail(this.articleID).then(response => {
+
           console.log(response)
 
-          this.allData = response.data;
+          this.allData = response.Data;
           this.title = this.allData.title;
           this.author = this.allData.author;
           this.content = this.allData.content;
-          this.issuingTime = this.allData.issuingTime;
+          this.issuingTime = this.allData.time.split("T")[0];
 
           console.log(this.allData);
         })
