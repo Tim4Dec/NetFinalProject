@@ -2,7 +2,7 @@ import {axios} from "@/utils/request";
 
 const api = {
   mySpeech: 'User/Speech',
-  myLike: '/myInfo/myLike',
+  myComment: 'User/Comment',
 }
 
 export function getMyPost (data) {
@@ -16,11 +16,11 @@ export function getMyPost (data) {
   })
 }
 
-export function getMyLike (data) {
+export function getMyComment (data) {
   return axios({
-    url: api.myLike,
+    url: api.myComment,
     method: 'post',
-    data: data,
+    data: JSON.stringify(data),
     headers: {
       'Content-Type': 'application/json;charset=UTF-8'
     }

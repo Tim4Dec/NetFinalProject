@@ -123,7 +123,7 @@ export default {
 
       .main {
         min-width: 260px;
-        width: 368px;
+        width: 280px;
         margin: 0 auto;
       }
 

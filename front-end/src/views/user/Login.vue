@@ -18,7 +18,7 @@
               type="text"
               placeholder="账户: 您的用户名"
               v-decorator="[
-                'username',
+                'Name',
                 {rules: [{ required: true, message: '请输入帐户名或者邮箱' }, { validator: handleUsernameOrEmail }], validateTrigger: 'change'}
               ]"
             >
@@ -33,7 +33,7 @@
               autocomplete="false"
               placeholder="密码: 您的密码，比如：admin "
               v-decorator="[
-                'password',
+                'Pwd',
                 {rules: [{ required: true, message: '请输入密码' }], validateTrigger: 'blur'}
               ]"
             >
@@ -52,6 +52,9 @@
           :disabled="state.loginBtn"
         >确定</a-button>
       </a-form-item>
+      <div class="user-login-other">
+        <router-link class="register" :to="{ name: 'register' }">注册新的账户</router-link>
+      </div>
     </a-form>
   </div>
 </template>
@@ -60,21 +63,21 @@
 import md5 from 'md5'
 import { mapActions } from 'vuex'
 import { timeFix } from '@/utils/util'
-import { getSmsCaptcha, get2step, getInfo } from '@/api/login'
+import {  getInfo } from '@/api/login'
 
 export default {
   data() {
     return {
       customActiveKey: 'tab1',
       loginBtn: false,
-      // login type: 0 email, 1 username, 2 telephone
+      // login type: 0 email, 1 Name, 2 telephone
       loginType: 0,
       stepCaptchaVisible: false,
       form: this.$form.createForm(this),
       state: {
         time: 60,
         loginBtn: false,
-        // login type: 0 email, 1 username, 2 telephone
+        // login type: 0 email, 1 Name, 2 telephone
         loginType: 0,
         smsSendBtn: false
       }
@@ -104,21 +107,19 @@ export default {
 
       state.loginBtn = true
 
-      const validateFieldsKey = ['username', 'password']
+      const validateFieldsKey = ['Name', 'Pwd']
 
       validateFields(validateFieldsKey, { force: true }, (err, values) => {
         if (!err) {
-          console.log('login form', values)
           const loginParams = { ...values }
-          delete loginParams.username
-          loginParams[!state.loginType ? 'email' : 'username'] = values.username
-          loginParams.password = md5(values.password)
+          delete loginParams.Name
+          loginParams[!state.loginType ? 'email' : 'Name'] = values.Name
+          loginParams.Pwd = md5(values.Pwd)
           console.log('para', loginParams)
           Login(loginParams)
             .then(res => {
                 this.loginSuccess(res)
-                console.log("data")
-                console.log(res.data)
+                console.log("data", res.Data)
             })
             .catch(err => this.requestFailed(err))
             .finally(() => {
@@ -132,7 +133,7 @@ export default {
       })
     },
     loginSuccess(res) {
-      console.log(res)
+      console.log("res", res)
       this.$router.push({ name: 'homepage' })
       // 延迟 1 秒显示欢迎信息
       setTimeout(() => {
@@ -152,7 +153,7 @@ export default {
     font-size: 14px;
   }
 
-  .forge-password {
+  .forge-Pwd {
     font-size: 14px;
   }
 

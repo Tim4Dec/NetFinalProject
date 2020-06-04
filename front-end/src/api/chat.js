@@ -7,6 +7,7 @@ const api = {
   deleteSpeech: 'Speech/Delete',
   sendComment: 'Comment/Deliver',
   comment:'Comment/All',
+  deleteComment: 'Comment/Delete',
 }
 
 export default api
@@ -71,6 +72,17 @@ export function sendComment(data) {
     url: api.sendComment,
     method: 'post',
     data: JSON.stringify(data),
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8'
+    }
+  })
+}
+
+export function deleteComment (data) {
+  return axios({
+    url: api.deleteComment + "?id="+ data ,
+    method: 'post',
+    //data: data,
     headers: {
       'Content-Type': 'application/json;charset=UTF-8'
     }

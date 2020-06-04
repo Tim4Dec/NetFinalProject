@@ -136,16 +136,17 @@ export default {
               if(response.Code === 200){
                 this.$notification.open({
                   message: '评论成功',
-                  description: '本条树洞评论成功',
+                  description: '本条评论成功',
                   icon: <a-icon type="check" style="color: #108ee9" />,
                 });
                 this.Data = [...response.data]
                 //this.DataShow = this.Data
+                this.reload();
 
               }else{
                 this.$notification.open({
                   message: '评论失败',
-                  description: '本条树洞评论失败',
+                  description: '本条评论失败',
                   con: <a-icon type="warning" style="color: #108ee9" />,
                 });
               }

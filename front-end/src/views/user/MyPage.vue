@@ -94,10 +94,18 @@
           <!--密码修改结束-->
         </a-col>
       <a-col :xl="16" :lg="24" :md="24" :sm="24" :xs="24">
+        <!--
         <a-card
           style="width:100%"
           :tabList="tabListNoTitle"
           :activeTabKey="noTitleKey"
+          @tabChange="key => onTabChange(key, 'noTitleKey')"
+        >
+        -->
+        <a-card
+          style="width:100%"
+          :tab-list="tabListNoTitle"
+          :active-tab-key="noTitleKey"
           @tabChange="key => onTabChange(key, 'noTitleKey')"
         >
       <template v-if="noTitleKey === '我的讨论'">
@@ -138,17 +146,38 @@
           <a-pagination @change="onChange1" :current="current1" :total="totalPage1*10" />
         </div>
       </template>
-      <template v-if="noTitleKey === '收藏'">
-        <a-list :dataSource="likeData">
-          <a-list-item>
-            <a-card :bordered="false" style="width:100%">
-              <a-card-meta title="item.title">
-                <img style="width:100px"
-                   slot="avatar"
-                   :src="item.image"
-                 />
-              </a-card-meta>
-            </a-card>
+      <template v-if="noTitleKey === '我的评论'">
+        <a-list :dataSource="commentData">
+          <a-list-item slot="renderItem" slot-scope="item, index">
+             <a slot="actions" @click="onClickDelete(item.id)">删除</a>
+             <a-modal
+                title="确认删除"
+                :visible="visible3"
+                @ok="onDeleteComment"
+                @cancel="onClickCancel"
+             >
+             <div class="modal">
+                是否删除本条评论
+             </div>
+             </a-modal>
+              <a-list-item-meta :title='item.title'>
+                <a-avatar
+                  width="72"
+                  slot="avatar"
+                  :src="item.avatar"
+                />
+                <div slot="description">
+                  <ellipsis :length="70">{{ item.content }}</ellipsis>
+                </div>
+                <br/>
+                <div slot="description">
+                  <ellipsis :length="70">{{ item.time }}</ellipsis>
+                </div>
+
+              </a-list-item-meta>
+              <div>
+                 <router-link :to="{ name: 'postDetail', params:{ id: item.speech} }">帖子详情</router-link>
+              </div>
           </a-list-item>
         </a-list>
         <div style="margin-top:20px">
@@ -173,8 +202,8 @@ import {mapGetters} from 'vuex'
 import {Button} from 'ant-design-vue'
 import HeadInfo from '@/components/tools/HeadInfo'
 import {Radar} from '@/components'
-import {getMyPost, getMyLike} from '@/api/myInfo'
-import {deleteSpeech} from '@/api/chat'
+import {getMyPost, getMyComment} from '@/api/myInfo'
+import {deleteSpeech, deleteComment} from '@/api/chat'
 import AFormItem from "ant-design-vue/es/form/FormItem";
 
 export default {
@@ -210,9 +239,9 @@ export default {
         },
         visible3: false,
         postData: [],
-        likeData: [],
+        commentData: [],
         allPostData: [],
-        allLikeData: [],
+        allCommentData: [],
         totalPage1: '',
         totalPage2: '',
         current1: 1,
@@ -240,11 +269,11 @@ export default {
             tab: '我的讨论',
           },
           {
-            key: '收藏',
-            tab: '收藏',
+            key: '我的评论',
+            tab: '我的评论',
           },
         ],
-        key: 'tab1',
+        key: '我的讨论',
         noTitleKey: '我的讨论',
     };
   },
@@ -313,12 +342,12 @@ export default {
 
       onChange2(current){
         this.current2=current;
-        getMyLike(this.current2).then((response)=>{
-          console.log(response);
-          console.log(this.page);
-          this.allLikeData=response.data;
-          this.likeData=this.allLikeData.likeData;
-          this.totalPage2=this.allLikeData.total //总页数
+        getMyComment({User:this.user.id,Page:this.current2}).then( response =>{
+          console.log("getMyComment2", response);
+
+          this.allCommentData=response.Data;
+          this.commentData=this.allCommentData.Data;
+          this.totalPage2=this.allCommentData.Total
         })
       },
 
@@ -348,11 +377,43 @@ export default {
             message: '删除失败',
             description: '本条信息删除失败',
             icon: <a-icon type="warning" style="color: #108ee9" />,
-        });
-        
-      }
+            });
+      
+          }
 
-    })
+        })
+      },
+
+      onDeleteComment () {
+        this.visible3 = false
+        console.log("onDeleteSpeech")
+
+        deleteComment(this.toDelete).then(response => {
+          console.log("deleteSpeech", response)
+          if(response.Code === 200){
+            //this.sfData = [...response.Data]
+            //this.sfDataShow = this.sfData
+            this.$notification.open({
+              message: '删除成功',
+              description: '本条信息删除成功',
+              icon: <a-icon type="check" style="color: #108ee9" />,
+            });
+            this.reload();
+          }else{
+            this.$notification.open({
+            message: '删除失败',
+            description: '本条信息删除失败',
+            icon: <a-icon type="warning" style="color: #108ee9" />,
+            });
+      
+          }
+
+        })
+      },
+
+    onTabChange(key, type) {
+      console.log(key, type);
+      this[type] = key;
     },
   },
 
@@ -368,12 +429,12 @@ export default {
 
       }),
 
-      getMyLike({User:this.user.id,Page:1}).then(response =>{
-        console.log(response);
+      getMyComment({User:this.user.id,Page:1}).then(response =>{
+        console.log("getMyComment", response);
 
-        this.allLikeData=response.data;
-        this.likeData=this.allLikeData.likeData;
-        this.totalPage2=this.allLikeData.totalPage //总页数
+        this.allCommentData=response.Data;
+        this.commentData=this.allCommentData.Data;
+        this.totalPage2=this.allCommentData.Total //总页数
       })
     }
 }
