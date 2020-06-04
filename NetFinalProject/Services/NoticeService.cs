@@ -15,9 +15,14 @@ namespace NetFinalProject.Services
 
         public async Task<Result> FindAll(int page)
         {
-            var result = await PaginatedList<notice>.CreateAsync(db.notices.AsNoTracking(), page, ConstantUtil.PAGE_SIZE, t => t.id);
+            var result = await PaginatedList<Notice>.CreateAsync(db.notices.AsNoTracking(), page, ConstantUtil.NOTE_PAGE_SIZE, t => t.id);
 
-            return ResultUtil.Success(result);
+            Dictionary<string, object> map = new Dictionary<string, object>();
+            map.Add("Total", result.TotalPages);
+            map.Add("Current", result.PageIndex);
+            map.Add("Data", NoticeWrapper.WrapNotice(result));
+
+            return ResultUtil.Success(map);
         }
 
         public async Task<Result> ShowDetail(int id)
@@ -29,9 +34,14 @@ namespace NetFinalProject.Services
 
         public async Task<Result> SearchByTitle(string title, int page)
         {
-            var result = await PaginatedList<notice>.CreateAsync(db.notices.Where(t => t.title.Contains(title)), page, ConstantUtil.PAGE_SIZE, t => t.id);
+            var result = await PaginatedList<Notice>.CreateAsync(db.notices.Where(t => t.title.Contains(title)), page, ConstantUtil.NOTE_PAGE_SIZE, t => t.id);
 
-            return ResultUtil.Success(result);
+            Dictionary<string, object> map = new Dictionary<string, object>();
+            map.Add("Total", result.TotalPages);
+            map.Add("Current", result.PageIndex);
+            map.Add("Data", result);
+
+            return ResultUtil.Success(map);
         }
     }
 }

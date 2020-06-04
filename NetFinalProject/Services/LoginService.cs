@@ -21,8 +21,8 @@ namespace NetFinalProject.Services
                 {
                     return ResultUtil.Error(ResultEnum.ResultType.LOGIN_FAIL);
                 }
-                user.pwd = null;
-                return ResultUtil.Success(user);
+
+                return ResultUtil.Success(new UserWrapper(user));
             }
 
         }

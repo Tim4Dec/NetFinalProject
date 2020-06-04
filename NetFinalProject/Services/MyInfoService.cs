@@ -37,8 +37,31 @@ namespace NetFinalProject.Services
                 return ResultUtil.Error(ResultEnum.ResultType.NOT_FOUND);
             }
 
-            user.pwd = null;
-            return ResultUtil.Success(user);
+            return ResultUtil.Success(new UserWrapper(user));
+        }
+
+        public async Task<Result> MySpeech(int id, int page)
+        {
+            var result = await PaginatedList<Speech>.CreateAsync(db.speeches.Where(t => t.owner == id), page, ConstantUtil.MY_SPEECH_PAGE_SIZE, t => t.id);
+
+            Dictionary<string, object> map = new Dictionary<string, object>();
+            map.Add("Total", result.TotalPages);
+            map.Add("Current", result.PageIndex);
+            map.Add("Data", SpeechWrapper.WrapSpeech(result));
+
+            return ResultUtil.Success(map);
+        }
+
+        public async Task<Result> MyComment(int id, int page)
+        {
+            var result = await PaginatedList<Comment>.CreateAsync(db.comments.Where(t => t.owner == id), page, ConstantUtil.MY_SPEECH_PAGE_SIZE, t => t.id);
+
+            Dictionary<string, object> map = new Dictionary<string, object>();
+            map.Add("Total", result.TotalPages);
+            map.Add("Current", result.PageIndex);
+            map.Add("Data", MyCommentWrapper.WrapComment(result));
+
+            return ResultUtil.Success(map);
         }
     }
 }

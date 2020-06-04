@@ -7,7 +7,7 @@ namespace NetFinalProject.Models
     using System.Data.Entity.Spatial;
 
     [Table("net.notice")]
-    public partial class notice
+    public partial class Notice
     {
         public int id { get; set; }
 

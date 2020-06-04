@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace NetFinalProject.Requests
 {
-    public class LoginRequest
+    public class GetCommentRequest
     {
-        public string Name { get; set; }
-        public string Pwd { get; set; }
+        public int Speech { get; set; }
+        public int Page { get; set; }
     }
 }

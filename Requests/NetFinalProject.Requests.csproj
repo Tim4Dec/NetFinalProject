@@ -42,8 +42,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DeliverCommentRequest.cs" />
+    <Compile Include="DeliverSpeechRequest.cs" />
+    <Compile Include="GetCommentRequest.cs" />
     <Compile Include="LoginRequest.cs" />
     <Compile Include="ModifyPwdRequest.cs" />
+    <Compile Include="MySpeechRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

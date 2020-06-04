@@ -25,6 +25,7 @@ namespace NetFinalProject.Utils
             { ResultType.NOT_FOUND, "not found" },
             { ResultType.LOGIN_FAIL, "invalid password ot user" },
             { ResultType.NOT_LOGIN, "login please" },
+            { ResultType.HAVE_OCCUPIED, "have been occupied" },
 
         };
 

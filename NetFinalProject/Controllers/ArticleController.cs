@@ -19,6 +19,8 @@ namespace NetFinalProject.Controllers
         {
             var result = await articleService.FindAll(page);
 
+            Console.WriteLine("request");
+
             return Json(result);
         }
 

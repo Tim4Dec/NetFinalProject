@@ -12,10 +12,11 @@ using NetFinalProject.Requests;
 
 namespace NetFinalProject.Controllers
 {
-    public class UserController: ApiController
+    public class UserController : ApiController
     {
         private readonly LoginService loginService = new LoginService();
         private readonly MyInfoService myInfoService = new MyInfoService();
+        private readonly RegisterService registerService = new RegisterService();
 
         [HttpPost]
         [Route("api/User/Login")]
@@ -34,5 +35,33 @@ namespace NetFinalProject.Controllers
 
             return Json(result);
         }
+
+        [HttpPost]
+        [Route("api/User/Sms")]
+        public IHttpActionResult GenerateSms()
+        {
+            var result = RegisterService.GenerateSms(ConstantUtil.SMS_LENGTH);
+
+            return Json(result);
+        }
+
+        [HttpPost]
+        [Route("api/User/Verify")]
+        public async Task<IHttpActionResult> VerifyName(string name)
+        {
+            var result = await registerService.VerifyUsername(name);
+
+            return Json(result);
+        }
+
+        [HttpPost]
+        [Route("api/User/Register")]
+        public IHttpActionResult Register([FromBody]LoginRequest request)
+        {
+            var result = registerService.Register(request.Name, request.Pwd);
+
+            return Json(result);
+        }
+
     }
 }

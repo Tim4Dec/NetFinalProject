@@ -7,9 +7,11 @@ namespace NetFinalProject.Models
     using System.Data.Entity.Spatial;
 
     [Table("net.user")]
-    public partial class user
+    public partial class User
     {
         public int id { get; set; }
+
+        public int sex { get; set; }
 
         [StringLength(50)]
         public string nickname { get; set; }
@@ -22,5 +24,7 @@ namespace NetFinalProject.Models
 
         [StringLength(250)]
         public string avatar { get; set; }
+
+        public DateTime? birthday { get; set; }
     }
 }

@@ -9,7 +9,7 @@ using System.Web;
 namespace NetFinalProject.Models
 {
     [Table("net.speech")]
-    public partial class speech
+    public partial class Speech
     {
         public int id { get; set; }
 

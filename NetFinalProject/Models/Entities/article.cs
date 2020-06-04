@@ -8,7 +8,7 @@ using System.Web;
 namespace NetFinalProject.Models
 {
     [Table("net.article")]
-    public partial class article
+    public partial class Article
     {
         public int id { get; set; }
 

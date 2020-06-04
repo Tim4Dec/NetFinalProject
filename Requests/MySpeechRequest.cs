@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace NetFinalProject.Requests
 {
-    public class ModifyPwdRequest
+    public class MySpeechRequest
     {
-        public string OldPwd { get; set; }
-        public string NewPwd { get; set; }
-        public int Id { get; set; }
+        public int User { get; set; }
+        public int Page { get; set; }
     }
 }
