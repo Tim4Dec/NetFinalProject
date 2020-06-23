@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+using System.Runtime.InteropServices;
 
-namespace NetFinalProject.Utils
+
+namespace ResultCOM
 {
     public class ResultEnum
     {
-        public enum ResultType{
+        [ComVisible(true)]
+        [Guid("9187C434-73DC-4CC9-9D82-63A6A0619A58")]
+        public enum ResultType
+        {
             SUCCESS = 200,
             FAIL = 400,
             UNAUTHORIZED = 401,

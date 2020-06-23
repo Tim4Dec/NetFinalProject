@@ -6,6 +6,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
+using ResultCOM;
 
 namespace NetFinalProject.Services
 {

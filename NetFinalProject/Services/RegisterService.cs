@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Web;
 using CMD5;
 using System.Runtime.InteropServices;
+using ResultCOM;
 
 namespace NetFinalProject.Services
 {

@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using static NetFinalProject.Utils.ResultEnum;
+﻿
+using System.Runtime.InteropServices;
+using static ResultCOM.ResultEnum;
 
-namespace NetFinalProject.Utils
+namespace ResultCOM
 {
+    [ComVisible(true)]
+    [Guid("EE1BAA9E-89B7-41A8-93A9-8578C94B7DA1")]
     public class ResultUtil
     {
         public static Result Success(object obj)

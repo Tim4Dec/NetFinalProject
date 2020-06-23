@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace NetFinalProject.Utils
 {
+
     public class ConstantUtil
     {
         public const int RECRUIT_PAGE_SIZE = 8;
