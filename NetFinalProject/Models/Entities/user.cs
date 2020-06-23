@@ -26,5 +26,11 @@ namespace NetFinalProject.Models
         public string avatar { get; set; }
 
         public DateTime? birthday { get; set; }
+
+        [StringLength(20)]
+        public string email { get; set; }
+
+        [StringLength(20)]
+        public string phone { get; set; }
     }
 }

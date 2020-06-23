@@ -33,9 +33,9 @@ namespace NetFinalProject.Controllers
 
         [HttpPost]
         [Route("api/Notice/Title")]
-        public async Task<IHttpActionResult> SearchByTitle(string title, int page = 1)
+        public async Task<IHttpActionResult> SearchByTitle([FromBody]SearchRequest request)
         {
-            var result = await noticeService.SearchByTitle(title, page);
+            var result = await noticeService.SearchByTitle(request.Title, request.Page);
 
             return Json(result);
         }

@@ -19,6 +19,10 @@ namespace NetFinalProject.Models
 
         public string sex { get; set; }
 
+        public string phone { get; set; }
+
+        public string email { get; set; }
+
         public UserWrapper(User user)
         {
             id = user.id;
@@ -27,6 +31,8 @@ namespace NetFinalProject.Models
             avatar = user.avatar;
             birthday = user.birthday.GetValueOrDefault().ToString("D");
             sex = transformSex(user.sex);
+            phone = user.phone;
+            email = user.email;
         }
         public UserWrapper()
         {

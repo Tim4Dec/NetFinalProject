@@ -37,6 +37,15 @@ namespace NetFinalProject.Controllers
         }
 
         [HttpPost]
+        [Route("api/User/ModifyInfo")]
+        public async Task<IHttpActionResult> ModifyInfo([FromBody]ModifyInfoRequest modifyInfoRequest)
+        {
+            var result = await myInfoService.ModifyInfo(modifyInfoRequest);
+
+            return Json(result);
+        }
+
+        [HttpPost]
         [Route("api/User/Sms")]
         public IHttpActionResult GenerateSms()
         {

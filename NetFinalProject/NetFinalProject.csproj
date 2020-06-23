@@ -303,6 +303,10 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CMD5\CMD5.vcxproj">
+      <Project>{bce239d1-2d85-4132-9a36-df1f486c7b2b}</Project>
+      <Name>CMD5</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Requests\NetFinalProject.Requests.csproj">
       <Project>{d8954920-7c66-4897-98ce-aa5f3e42b5d7}</Project>
       <Name>NetFinalProject.Requests</Name>

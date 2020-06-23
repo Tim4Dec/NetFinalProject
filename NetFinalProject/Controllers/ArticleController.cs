@@ -1,4 +1,5 @@
-﻿using NetFinalProject.Services;
+﻿using NetFinalProject.Requests;
+using NetFinalProject.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,6 +7,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+
 
 namespace NetFinalProject.Controllers
 {
@@ -35,9 +37,9 @@ namespace NetFinalProject.Controllers
 
         [HttpPost]
         [Route("api/Article/Title")]
-        public async Task<IHttpActionResult> SearchByTitle(string title, int page = 1)
+        public async Task<IHttpActionResult> SearchByTitle([FromBody]SearchRequest request)
         {
-            var result = await articleService.SearchByTitle(title, page);
+            var result = await articleService.SearchByTitle(request.Title, request.Page);
 
             return Json(result);
         }

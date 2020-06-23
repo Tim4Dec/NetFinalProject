@@ -1,4 +1,5 @@
 ﻿using NetFinalProject.Models;
+using NetFinalProject.Requests;
 using NetFinalProject.Utils;
 using System;
 using System.Collections.Generic;
@@ -62,6 +63,26 @@ namespace NetFinalProject.Services
             map.Add("Data", MyCommentWrapper.WrapComment(result));
 
             return ResultUtil.Success(map);
+        }
+
+
+        public async Task<Result> ModifyInfo(ModifyInfoRequest request)
+        {
+            var user = await db.users.SingleOrDefaultAsync(x => x.id == request.Id);
+
+            if (user == null)
+            {
+                return ResultUtil.Error(ResultEnum.ResultType.LOGIN_FAIL);
+            }
+
+            user.birthday = request.Birthday;
+            user.email = request.Email;
+            user.nickname = request.Nickname;
+            user.sex = request.Sex;
+            user.phone = request.Phone;
+            await db.SaveChangesAsync();
+
+            return ResultUtil.Success();
         }
     }
 }
