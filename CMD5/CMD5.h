@@ -1,11 +1,12 @@
 ﻿#pragma once
 
 // 引入库
-#include<msclr\marshal_cppstd.h>
+
 #include<math.h>
 #include<string>
 #include<memory.h>
 #include<cstdlib>
+#include<msclr\marshal_cppstd.h>
 
 // define
 #define UInt32 unsigned int

@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{2556CB38-0A13-4071-9BFC-9748ED2EA293}</ProjectGuid>
+    <ProjectGuid>{488140C1-8610-49ED-BA2F-73891EAF579A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NetFinalProject.Utils</RootNamespace>
-    <AssemblyName>NetFinalProject.Utils</AssemblyName>
+    <RootNamespace>NetFinalProject.Models</RootNamespace>
+    <AssemblyName>NetFinalProject.Models</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -21,7 +21,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <RegisterForComInterop>false</RegisterForComInterop>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -31,19 +30,16 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>context.snk</AssemblyOriginatorKeyFile>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework">
       <HintPath>..\NetFinalProject\bin\EntityFramework.dll</HintPath>
     </Reference>
+    <Reference Include="NetFinalProject.Services">
+      <HintPath>..\NetFinalProject.Services\bin\Debug\NetFinalProject.Services.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -52,12 +48,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConstantUtil.cs" />
-    <Compile Include="PageUtil.cs" />
+    <Compile Include="DBContext\DBModel.cs" />
+    <Compile Include="Entities\Article.cs" />
+    <Compile Include="Entities\Comment.cs" />
+    <Compile Include="Entities\notice.cs" />
+    <Compile Include="Entities\speech.cs" />
+    <Compile Include="Entities\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="context.snk" />
+    <Compile Include="Wrappers\CommentWrapper.cs" />
+    <Compile Include="Wrappers\MyCommentWrapper.cs" />
+    <Compile Include="Wrappers\NoticeWrapper.cs" />
+    <Compile Include="Wrappers\SpeechWrapper.cs" />
+    <Compile Include="Wrappers\UserWrapper.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
